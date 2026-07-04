@@ -44,7 +44,7 @@ export function estimateCostUsd(opts: {
   return base * factor;
 }
 
-export function usdToKrw(usd: number, usdKrw = DEFAULTS.USD_KRW): number {
+export function usdToKrw(usd: number, usdKrw: number = DEFAULTS.USD_KRW): number {
   return Math.round(usd * usdKrw);
 }
 

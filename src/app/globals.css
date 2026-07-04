@@ -49,3 +49,23 @@
     border-color: var(--border);
   }
 }
+
+@layer components {
+  /* 공통 입력 필드(미니멀, 헤어라인 보더) */
+  .input {
+    width: 100%;
+    border-radius: var(--radius-control);
+    border-width: 1px;
+    background-color: var(--bg);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+  }
+  .input::placeholder {
+    color: var(--text-muted);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--text-secondary);
+  }
+}

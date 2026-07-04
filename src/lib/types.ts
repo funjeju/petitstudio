@@ -55,6 +55,7 @@ export interface CoreImageDoc {
   ownerUid: string;
   petId: string;
   storagePath: string;
+  imageUrl: string; // 다운로드 토큰 URL(표시용, 03 §2)
   quality: Quality;
   costUsd: number;
   status: AssetStatus;
@@ -71,6 +72,7 @@ export interface GenerationDoc {
   background: string;
   userPrompt: string;
   storagePath: string;
+  imageUrl: string; // 다운로드 토큰 URL(표시용)
   quality: Quality;
   costUsd: number;
   status: AssetStatus;

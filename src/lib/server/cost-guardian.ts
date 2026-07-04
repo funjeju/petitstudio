@@ -113,10 +113,11 @@ export async function refundReservation(uid: string, period = currentPeriod()): 
 /**
  * 생성 성공 후 실제 원가 기록 + 월 총액 누계. costLogs 는 서버만 write(보안규칙).
  */
-export async function commitCost(input: GuardInput & { period?: string }): Promise<number> {
+export async function commitCost(input: GuardInput & { period?: string; costUsd?: number }): Promise<number> {
   const db = adminDb();
   const period = input.period ?? currentPeriod();
-  const costUsd = estimateCostUsd({ quality: input.quality, edit: input.edit, portrait: input.portrait });
+  const costUsd =
+    input.costUsd ?? estimateCostUsd({ quality: input.quality, edit: input.edit, portrait: input.portrait });
 
   const batch = db.batch();
   const logRef = db.collection('costLogs').doc();

@@ -56,6 +56,7 @@
   "ownerUid": "string",
   "petId": "string",
   "storagePath": "coreImages/{uid}/{coreId}.png",
+  "imageUrl": "https://firebasestorage.../...?token=",  // 표시용 다운로드 토큰 URL
   "quality": "medium",                // 생성 시 티어
   "costUsd": 0.095,                    // 이 생성에 든 실비용(로그)
   "status": "active | trashed",
@@ -75,6 +76,7 @@
   "background": "forest",             // 배경 옵션 id
   "userPrompt": "가을 낙엽 배경",       // 유저 텍스트 옵션
   "storagePath": "generations/{uid}/{genId}.png",
+  "imageUrl": "https://firebasestorage.../...?token=",  // 표시용(피드 공개 이미지도 이 URL로 노출)
   "quality": "medium | high",
   "costUsd": 0.095,
   "status": "active | trashed",

@@ -1,9 +1,8 @@
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Placeholder } from '@/components/placeholder';
+import { setRequestLocale } from 'next-intl/server';
+import { CreateClient } from './create-client';
 
 export default async function CreatePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('nav');
-  return <Placeholder title={t('create')} />;
+  return <CreateClient />;
 }

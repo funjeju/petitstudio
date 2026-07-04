@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "홈",
-    "explore": "탐색",
+    "explore": "실험실",
     "create": "촬영",
     "collection": "컬렉션",
     "studio": "마이 스튜디오"
@@ -15,12 +15,114 @@
     "heroBody": "사진 한 장이면 촬영 수준의 코어 이미지가 완성돼요. 입혀보고, 배경을 바꾸고, 굿즈로 남기세요.",
     "cta": "우리 아이 촬영하기"
   },
+  "feed": {
+    "title": "피드",
+    "empty": "아직 공개된 작품이 없어요.",
+    "emptyCta": "첫 작품 만들기",
+    "tryOnMine": "내 아이에게 입혀보기",
+    "filterRecommended": "추천",
+    "filterFollowing": "팔로잉",
+    "filterSeason": "시즌",
+    "filterStyle": "스타일",
+    "filterLab": "실험실"
+  },
+  "create": {
+    "title": "우리 아이 촬영하기",
+    "petName": "이름",
+    "petNamePlaceholder": "초코",
+    "species": "종류",
+    "speciesDog": "강아지",
+    "speciesCat": "고양이",
+    "speciesOther": "기타",
+    "breed": "품종",
+    "breedPlaceholder": "말티푸",
+    "photos": "사진 (여러 각도 권장)",
+    "uploadHint": "최대 {max}장, 10MB 이하",
+    "tooLarge": "10MB 이하만 올릴 수 있어요.",
+    "shoot": "촬영하기",
+    "generating": "촬영 중… 조명을 세팅하고 있어요",
+    "needLogin": "촬영하려면 로그인이 필요해요.",
+    "needPhoto": "사진을 1장 이상 올려주세요.",
+    "resultTitle": "촬영 완료!",
+    "goFitting": "입혀보러 가기"
+  },
+  "fitting": {
+    "title": "피팅룸",
+    "chooseCore": "어떤 코어에 입혀볼까요?",
+    "noCores": "먼저 촬영으로 코어 이미지를 만들어 주세요.",
+    "background": "배경",
+    "bgNone": "그대로",
+    "bgSea": "바다",
+    "bgForest": "숲",
+    "bgCity": "도시",
+    "bgLivingRoom": "거실",
+    "apparel": "아이템 (쉼표로 구분)",
+    "apparelHint": "예: hat_beret, scarf_wool",
+    "prompt": "요청 문구",
+    "promptPlaceholder": "가을 낙엽 배경",
+    "apply": "입혀보기",
+    "applying": "합성 중… 촬영하고 있어요",
+    "result": "완성!",
+    "shareToFeed": "피드에 공개",
+    "sharedDone": "공개됨"
+  },
+  "explore": {
+    "title": "실험실 — 가상 펫",
+    "desc": "세상에 없는 우리 아이를 만들어요. 동물·전설 캐릭터를 섞어보세요.",
+    "name": "이름",
+    "namePlaceholder": "몽이",
+    "parts": "구성 (쉼표로 구분)",
+    "partsHint": "예: 사모예드, 아기판다",
+    "extras": "특징 (선택)",
+    "extrasHint": "예: 유니콘 뿔",
+    "create": "가상 펫 만들기",
+    "creating": "생성 중…",
+    "needParts": "구성 요소를 1개 이상 입력해 주세요."
+  },
+  "studio": {
+    "title": "마이 스튜디오",
+    "credits": "이번 달 크레딧",
+    "remaining": "{remaining} / {limit} 남음",
+    "myPets": "마이펫",
+    "noPets": "등록된 펫이 없어요.",
+    "myCores": "코어 이미지",
+    "myGenerations": "내 작품",
+    "empty": "아직 없어요.",
+    "delete": "삭제",
+    "deleted": "삭제됨"
+  },
+  "goods": {
+    "title": "굿즈로 만들기",
+    "needLogin": "굿즈를 만들려면 로그인이 필요해요.",
+    "noWorks": "먼저 작품을 만들어 주세요.",
+    "goCreate": "촬영하러 가기",
+    "selectImages": "이미지 {n}장 선택",
+    "price": "판매가",
+    "costGen": "이미지 생성원가",
+    "costPrint": "인쇄 제휴원가",
+    "printTbd": "미정",
+    "margin": "마진",
+    "marginTbd": "인쇄단가 확정 후",
+    "hiPreview": "고화질 미리보기 (high 재생성)",
+    "hiPreviewBusy": "재생성 중…",
+    "order": "주문 담기",
+    "ordered": "장바구니에 담았어요",
+    "orderedDesc": "결제·배송은 인쇄 제휴 확정 후 제공됩니다."
+  },
+  "share": {
+    "share": "공유",
+    "copied": "링크 복사됨",
+    "download": "저장"
+  },
   "auth": {
     "signInWithGoogle": "Google로 계속하기",
     "signOut": "로그아웃"
   },
   "common": {
     "loading": "불러오는 중…",
-    "comingSoon": "준비 중"
+    "comingSoon": "준비 중",
+    "autoSaved": "자동 저장됨",
+    "error": "문제가 발생했어요.",
+    "retry": "다시 시도"
   }
 }

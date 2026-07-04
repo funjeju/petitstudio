@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Home",
-    "explore": "Explore",
+    "explore": "Lab",
     "create": "Create",
     "collection": "Collection",
     "studio": "My Studio"
@@ -15,12 +15,114 @@
     "heroBody": "One photo becomes a studio-grade core image. Dress them up, change the scene, keep it as goods.",
     "cta": "Photograph my pet"
   },
+  "feed": {
+    "title": "Feed",
+    "empty": "No public looks yet.",
+    "emptyCta": "Create the first one",
+    "tryOnMine": "Try on my pet",
+    "filterRecommended": "For you",
+    "filterFollowing": "Following",
+    "filterSeason": "Season",
+    "filterStyle": "Style",
+    "filterLab": "Lab"
+  },
+  "create": {
+    "title": "Photograph my pet",
+    "petName": "Name",
+    "petNamePlaceholder": "Choco",
+    "species": "Species",
+    "speciesDog": "Dog",
+    "speciesCat": "Cat",
+    "speciesOther": "Other",
+    "breed": "Breed",
+    "breedPlaceholder": "Maltipoo",
+    "photos": "Photos (multiple angles recommended)",
+    "uploadHint": "Up to {max}, under 10MB",
+    "tooLarge": "Files must be under 10MB.",
+    "shoot": "Shoot",
+    "generating": "Shooting… setting up the lights",
+    "needLogin": "Please sign in to shoot.",
+    "needPhoto": "Add at least one photo.",
+    "resultTitle": "Done!",
+    "goFitting": "Go dress up"
+  },
+  "fitting": {
+    "title": "Fitting room",
+    "chooseCore": "Which core to dress?",
+    "noCores": "Create a core image first by shooting.",
+    "background": "Background",
+    "bgNone": "Keep",
+    "bgSea": "Sea",
+    "bgForest": "Forest",
+    "bgCity": "City",
+    "bgLivingRoom": "Living room",
+    "apparel": "Items (comma separated)",
+    "apparelHint": "e.g. hat_beret, scarf_wool",
+    "prompt": "Prompt",
+    "promptPlaceholder": "autumn leaves background",
+    "apply": "Try on",
+    "applying": "Compositing… shooting now",
+    "result": "Done!",
+    "shareToFeed": "Publish to feed",
+    "sharedDone": "Published"
+  },
+  "explore": {
+    "title": "Lab — Virtual pet",
+    "desc": "Create a pet that doesn't exist. Blend animals and legendary characters.",
+    "name": "Name",
+    "namePlaceholder": "Mongi",
+    "parts": "Parts (comma separated)",
+    "partsHint": "e.g. Samoyed, baby panda",
+    "extras": "Extras (optional)",
+    "extrasHint": "e.g. unicorn horn",
+    "create": "Create virtual pet",
+    "creating": "Creating…",
+    "needParts": "Enter at least one part."
+  },
+  "studio": {
+    "title": "My Studio",
+    "credits": "This month's credits",
+    "remaining": "{remaining} / {limit} left",
+    "myPets": "My pets",
+    "noPets": "No pets yet.",
+    "myCores": "Core images",
+    "myGenerations": "My looks",
+    "empty": "Nothing yet.",
+    "delete": "Delete",
+    "deleted": "Deleted"
+  },
+  "goods": {
+    "title": "Make goods",
+    "needLogin": "Please sign in to make goods.",
+    "noWorks": "Create a look first.",
+    "goCreate": "Go create",
+    "selectImages": "Select {n} image(s)",
+    "price": "Price",
+    "costGen": "Image gen cost",
+    "costPrint": "Print partner cost",
+    "printTbd": "TBD",
+    "margin": "Margin",
+    "marginTbd": "After print cost set",
+    "hiPreview": "HD preview (high re-gen)",
+    "hiPreviewBusy": "Regenerating…",
+    "order": "Add to cart",
+    "ordered": "Added to cart",
+    "orderedDesc": "Payment & shipping after print partnership."
+  },
+  "share": {
+    "share": "Share",
+    "copied": "Link copied",
+    "download": "Save"
+  },
   "auth": {
     "signInWithGoogle": "Continue with Google",
     "signOut": "Sign out"
   },
   "common": {
     "loading": "Loading…",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "autoSaved": "Auto-saved",
+    "error": "Something went wrong.",
+    "retry": "Retry"
   }
 }
