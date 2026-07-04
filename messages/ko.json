@@ -12,17 +12,15 @@
   },
   "home": {
     "eyebrow": "반려동물 AI 스튜디오",
-    "heroTitle": "우리 아이를 스튜디오로",
+    "heroTitle": "가장 깨끗한 한 장,\n모든 스타일의 시작",
     "heroBody": "사진 몇 장이면 촬영 수준의 코어 이미지가 완성돼요. 입혀보고, 배경을 바꾸고, 굿즈로 남기세요.",
+    "heroSub": "코어 이미지로 완성하는 우리 아이의 무한한 스타일",
     "cta": "우리 아이 촬영하기",
-    "strip": "사진 3장이면, 우리 아이의 스튜디오 컷",
-    "stripCta": "촬영 시작",
-    "step1Title": "촬영",
-    "step1Body": "사진 업로드로 코어 이미지 생성",
-    "step2Title": "입혀보기",
-    "step2Body": "어패럴·배경을 자유롭게 합성",
-    "step3Title": "굿즈",
-    "step3Body": "달력·액자·폰케이스로 소장"
+    "ctaCore": "코어 이미지 만들기",
+    "quickCore": "코어 이미지",
+    "quickFitting": "가상 피팅룸",
+    "quickGoods": "굿즈 만들기",
+    "quickOrders": "주문·배송"
   },
   "feed": {
     "title": "피드",
@@ -30,11 +28,14 @@
     "empty": "아직 공개된 작품이 없어요.",
     "emptyCta": "첫 작품 만들기",
     "tryOnMine": "내 아이에게 입혀보기",
-    "filterRecommended": "추천",
-    "filterFollowing": "팔로잉",
-    "filterSeason": "시즌",
-    "filterStyle": "스타일",
-    "filterLab": "실험실"
+    "peek": "피팅룸 들러보기",
+    "seeAll": "전체 보기",
+    "catAll": "ALL",
+    "catHat": "모자",
+    "catOutfit": "의상",
+    "catAccessory": "액세서리",
+    "catSeason": "시즌",
+    "catProp": "소품"
   },
   "create": {
     "title": "우리 아이 촬영하기",
@@ -103,6 +104,9 @@
   },
   "goods": {
     "title": "굿즈로 만들기",
+    "lineup": "굿즈 라인업",
+    "more": "더보기",
+    "priceFrom": "{price}원~",
     "needLogin": "굿즈를 만들려면 로그인이 필요해요.",
     "noWorks": "먼저 작품을 만들어 주세요.",
     "goCreate": "촬영하러 가기",

@@ -12,17 +12,15 @@
   },
   "home": {
     "eyebrow": "Pet AI studio",
-    "heroTitle": "Bring your pet to the studio",
+    "heroTitle": "One clean shot,\nthe start of every style",
     "heroBody": "A few photos become a studio-grade core image. Dress them up, change the scene, keep it as goods.",
+    "heroSub": "Endless styles built from one core image",
     "cta": "Photograph my pet",
-    "strip": "3 photos → your pet's studio shot",
-    "stripCta": "Start shooting",
-    "step1Title": "Shoot",
-    "step1Body": "Upload photos to create a core image",
-    "step2Title": "Dress up",
-    "step2Body": "Compose apparel and backgrounds",
-    "step3Title": "Goods",
-    "step3Body": "Keep it as calendar, frame, case"
+    "ctaCore": "Create core image",
+    "quickCore": "Core image",
+    "quickFitting": "Fitting room",
+    "quickGoods": "Make goods",
+    "quickOrders": "Orders"
   },
   "feed": {
     "title": "Feed",
@@ -30,11 +28,14 @@
     "empty": "No public looks yet.",
     "emptyCta": "Create the first one",
     "tryOnMine": "Try on my pet",
-    "filterRecommended": "For you",
-    "filterFollowing": "Following",
-    "filterSeason": "Season",
-    "filterStyle": "Style",
-    "filterLab": "Lab"
+    "peek": "Peek into the fitting room",
+    "seeAll": "See all",
+    "catAll": "ALL",
+    "catHat": "Hat",
+    "catOutfit": "Outfit",
+    "catAccessory": "Accessory",
+    "catSeason": "Season",
+    "catProp": "Prop"
   },
   "create": {
     "title": "Photograph my pet",
@@ -103,6 +104,9 @@
   },
   "goods": {
     "title": "Make goods",
+    "lineup": "Goods lineup",
+    "more": "More",
+    "priceFrom": "From {price} KRW",
     "needLogin": "Please sign in to make goods.",
     "noWorks": "Create a look first.",
     "goCreate": "Go create",
