@@ -1,0 +1,85 @@
+rules_version = '2';
+
+// petit studio Firestore 보안 규칙 — 03_DATA_MODEL.md §6 / 02_ARCHITECTURE.md §5
+// 핵심: 크레딧/등급/role/costUsd 등 "돈 관련" 필드는 클라이언트 write 금지(Admin SDK만).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    // 클라이언트가 건드리면 안 되는 서버 전용 필드
+    function serverOnlyUserFields() {
+      return ['tier', 'role', 'credits'];
+    }
+
+    // 유저: 본인 문서만 read. create/update 가능하되 서버 전용 필드 변경 금지.
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && !request.resource.data.keys().hasAny(serverOnlyUserFields());
+      allow update: if isOwner(uid)
+        && !request.resource.data.diff(resource.data).affectedKeys()
+             .hasAny(serverOnlyUserFields());
+      allow delete: if false; // 계정 삭제는 서버 경유
+    }
+
+    // 펫: 소유자만 CRUD.
+    match /pets/{petId} {
+      allow read: if isOwner(resource.data.ownerUid);
+      allow create: if isOwner(request.resource.data.ownerUid);
+      allow update, delete: if isOwner(resource.data.ownerUid);
+    }
+
+    // 코어 이미지: 생성/원가 필드는 서버가 씀 → 클라이언트 write 전면 금지, read만.
+    match /coreImages/{coreId} {
+      allow read: if isOwner(resource.data.ownerUid);
+      allow write: if false;
+    }
+
+    // 생성물: 소유자 read. 클라이언트는 shared 토글/소프트삭제 정도만 허용,
+    // costUsd/quality/storagePath 등은 서버가 씀. 공개(shared)면 누구나 read.
+    match /generations/{genId} {
+      allow read: if resource.data.shared == true
+        || isOwner(resource.data.ownerUid);
+      allow create: if false; // 생성은 서버 함수만
+      allow update: if isOwner(resource.data.ownerUid)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['shared', 'status']);
+      allow delete: if false; // 소프트 삭제(status)로만
+    }
+
+    // 카탈로그/상품/전역설정: 공개 read, write는 어드민(서버) 전용.
+    match /apparel/{apparelId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /goods/{goodsId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /adminConfig/{docId} {
+      allow read: if false;  // 서버만 접근
+      allow write: if false;
+    }
+
+    // 주문: 본인 것 read. 생성/상태전이는 서버(결제 검증) 경유.
+    match /orders/{orderId} {
+      allow read: if isOwner(resource.data.ownerUid);
+      allow write: if false;
+    }
+
+    // 원가 로그: 서버 전용, 클라이언트 접근 금지.
+    match /costLogs/{logId} {
+      allow read, write: if false;
+    }
+
+    // 월 총액 누계(kill switch 기준): 서버 전용.
+    match /costTotals/{period} {
+      allow read, write: if false;
+    }
+  }
+}

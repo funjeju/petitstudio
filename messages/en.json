@@ -1,0 +1,26 @@
+{
+  "app": {
+    "name": "petit studio",
+    "tagline": "One clean shot. The start of every style."
+  },
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "create": "Create",
+    "collection": "Collection",
+    "studio": "My Studio"
+  },
+  "home": {
+    "heroTitle": "Bring your pet to the studio",
+    "heroBody": "One photo becomes a studio-grade core image. Dress them up, change the scene, keep it as goods.",
+    "cta": "Photograph my pet"
+  },
+  "auth": {
+    "signInWithGoogle": "Continue with Google",
+    "signOut": "Sign out"
+  },
+  "common": {
+    "loading": "Loading…",
+    "comingSoon": "Coming soon"
+  }
+}

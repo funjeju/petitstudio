@@ -1,0 +1,26 @@
+{
+  "app": {
+    "name": "petit studio",
+    "tagline": "가장 깨끗한 한 장, 모든 스타일의 시작."
+  },
+  "nav": {
+    "home": "홈",
+    "explore": "탐색",
+    "create": "촬영",
+    "collection": "컬렉션",
+    "studio": "마이 스튜디오"
+  },
+  "home": {
+    "heroTitle": "우리 아이를 스튜디오로",
+    "heroBody": "사진 한 장이면 촬영 수준의 코어 이미지가 완성돼요. 입혀보고, 배경을 바꾸고, 굿즈로 남기세요.",
+    "cta": "우리 아이 촬영하기"
+  },
+  "auth": {
+    "signInWithGoogle": "Google로 계속하기",
+    "signOut": "로그아웃"
+  },
+  "common": {
+    "loading": "불러오는 중…",
+    "comingSoon": "준비 중"
+  }
+}
