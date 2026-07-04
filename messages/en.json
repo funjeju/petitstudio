@@ -11,12 +11,22 @@
     "studio": "My Studio"
   },
   "home": {
+    "eyebrow": "Pet AI studio",
     "heroTitle": "Bring your pet to the studio",
-    "heroBody": "One photo becomes a studio-grade core image. Dress them up, change the scene, keep it as goods.",
-    "cta": "Photograph my pet"
+    "heroBody": "A few photos become a studio-grade core image. Dress them up, change the scene, keep it as goods.",
+    "cta": "Photograph my pet",
+    "strip": "3 photos → your pet's studio shot",
+    "stripCta": "Start shooting",
+    "step1Title": "Shoot",
+    "step1Body": "Upload photos to create a core image",
+    "step2Title": "Dress up",
+    "step2Body": "Compose apparel and backgrounds",
+    "step3Title": "Goods",
+    "step3Body": "Keep it as calendar, frame, case"
   },
   "feed": {
     "title": "Feed",
+    "search": "Search",
     "empty": "No public looks yet.",
     "emptyCta": "Create the first one",
     "tryOnMine": "Try on my pet",
