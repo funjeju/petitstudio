@@ -98,12 +98,14 @@ function backgroundFragment(background?: string): string {
   return `set against ${scene} scene, natural depth of field, lighting matched to the pet`;
 }
 
-/** 피팅룸 edit 프롬프트 — image-edit-orchestration 템플릿. */
+/** 피팅룸 edit 프롬프트 — image-edit-orchestration 템플릿.
+ * attachedItems=true 면 유저가 첨부한 아이템 이미지(첫 이미지=펫, 이후=아이템)를 반영. */
 export function buildFittingPrompt(opts: {
   species: Species;
   apparel: ApparelFragment[];
   background?: string;
   userPrompt?: string;
+  attachedItems?: boolean;
 }): string {
   const ordered = orderApparel(opts.apparel);
   const fragments = ordered.map((a) => a.promptFragment).filter(Boolean).join(', ');
@@ -111,11 +113,20 @@ export function buildFittingPrompt(opts: {
   const userText = sanitizeUserPrompt(opts.userPrompt);
   const subject = speciesLabel(opts.species);
 
+  // 장착 대상: 첨부 아이템 이미지 + 카탈로그 프롬프트 조각.
+  const dressWith = [
+    opts.attachedItems ? 'the apparel/accessory shown in the provided reference image(s)' : '',
+    fragments,
+  ]
+    .filter(Boolean)
+    .join(', ');
+
   return [
-    `Edit the base image: dress the ${subject} with ${fragments || 'no added apparel'}`,
+    'The first image is the pet; any following images are apparel/accessory items to put on the pet',
+    dressWith ? `Edit the pet image: dress the ${subject} with ${dressWith}` : `Edit the pet image`,
     "preserve the pet's face, fur color, markings, and body shape exactly",
-    'each item fitted naturally to the correct body part, correct proportions, not floating',
-    'consistent lighting and perspective with the subject, seamless blend',
+    'each item fitted naturally to the correct body part, correct proportions and scale, not floating',
+    'consistent lighting and perspective with the subject, seamless photorealistic blend',
     bg,
     userText,
     'Studio-quality, photorealistic',

@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAuth } from '@/lib/firebase/auth-context';
 import { fetchCore, fetchMyCores, shareGeneration } from '@/lib/client-data';
+import { uploadOriginal } from '@/lib/firebase/upload';
 import { authedFetch } from '@/lib/api-client';
 import { ResultView } from '@/components/result-view';
 import type { CoreImageDoc } from '@/lib/types';
@@ -18,13 +19,21 @@ const BACKGROUNDS = [
   { value: 'living_room', key: 'bgLivingRoom' },
 ] as const;
 
+interface Item {
+  file: File;
+  previewUrl: string;
+}
+
 export function FittingClient({ coreId }: { coreId: string }) {
   const t = useTranslations('fitting');
   const { user } = useAuth();
   const search = useSearchParams();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const [selected, setSelected] = useState<CoreImageDoc | null>(null);
   const [myCores, setMyCores] = useState<CoreImageDoc[] | null>(null);
+  const [items, setItems] = useState<Item[]>([]);
+  const [lightbox, setLightbox] = useState<string | null>(null);
   const [background, setBackground] = useState<string>(search.get('background') ?? '');
   const [apparel, setApparel] = useState<string>(search.get('apparel') ?? '');
   const [prompt, setPrompt] = useState<string>(search.get('prompt') ?? '');
@@ -33,7 +42,6 @@ export function FittingClient({ coreId }: { coreId: string }) {
   const [result, setResult] = useState<{ genId: string; url: string } | null>(null);
   const [shared, setShared] = useState(false);
 
-  // coreId 가 내 코어면 바로 선택, 아니면(=피드 '입혀보기') 내 코어 목록에서 고르기.
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
@@ -53,18 +61,31 @@ export function FittingClient({ coreId }: { coreId: string }) {
     };
   }, [coreId, user]);
 
+  function addFiles(files: FileList | null) {
+    if (!files) return;
+    setError('');
+    const next = [...items];
+    for (const file of Array.from(files)) {
+      if (next.length >= 3) break;
+      if (!file.type.startsWith('image/')) continue;
+      if (file.size > 10 * 1024 * 1024) continue;
+      next.push({ file, previewUrl: URL.createObjectURL(file) });
+    }
+    setItems(next);
+  }
+
   async function onApply() {
     if (!selected) return;
     setError('');
     setBusy(true);
     try {
-      const apparelIds = apparel
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean);
+      const apparelPaths = user
+        ? await Promise.all(items.map((it) => uploadOriginal(user.uid, it.file)))
+        : [];
+      const apparelIds = apparel.split(',').map((s) => s.trim()).filter(Boolean);
       const res = await authedFetch('/api/fitting/apply', {
         method: 'POST',
-        body: JSON.stringify({ coreId: selected.coreId, apparel: apparelIds, background, userPrompt: prompt }),
+        body: JSON.stringify({ coreId: selected.coreId, apparel: apparelIds, apparelPaths, background, userPrompt: prompt }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? 'failed');
@@ -89,9 +110,7 @@ export function FittingClient({ coreId }: { coreId: string }) {
 
   // 코어 선택 단계.
   if (!selected) {
-    if (myCores === null) {
-      return <p className="py-16 text-center text-sm text-text-muted">…</p>;
-    }
+    if (myCores === null) return <p className="py-16 text-center text-sm text-text-muted">…</p>;
     if (myCores.length === 0) {
       return (
         <div className="flex flex-col items-center gap-4 py-16 text-center">
@@ -107,12 +126,7 @@ export function FittingClient({ coreId }: { coreId: string }) {
         <h1 className="text-lg font-semibold">{t('chooseCore')}</h1>
         <div className="grid grid-cols-3 gap-3">
           {myCores.map((c) => (
-            <button
-              key={c.coreId}
-              type="button"
-              onClick={() => setSelected(c)}
-              className="aspect-square overflow-hidden rounded-card border"
-            >
+            <button key={c.coreId} type="button" onClick={() => setSelected(c)} className="aspect-square overflow-hidden rounded-card border">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={c.imageUrl} alt="" className="h-full w-full object-cover" />
             </button>
@@ -126,9 +140,50 @@ export function FittingClient({ coreId }: { coreId: string }) {
     <div className="mx-auto flex max-w-md flex-col gap-5 py-4">
       <h1 className="text-xl font-semibold">{t('title')}</h1>
 
-      {/* 중앙 코어 이미지 (06 §2) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={selected.imageUrl} alt="" className="w-full rounded-card border" />
+      {/* 코어 이미지 + 첨부 아이템 썸네일 (06 §2) */}
+      <div className="flex gap-3">
+        <div className="min-w-0 flex-1">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={selected.imageUrl} alt="" className="w-full rounded-card border" />
+        </div>
+        <div className="flex w-16 shrink-0 flex-col gap-2">
+          {items.map((it, i) => (
+            <button
+              key={it.previewUrl}
+              type="button"
+              onClick={() => setLightbox(it.previewUrl)}
+              title={t('viewOriginal')}
+              className="relative aspect-square overflow-hidden rounded-control border"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={it.previewUrl} alt="" className="h-full w-full object-cover" />
+              <span
+                role="button"
+                tabIndex={-1}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setItems(items.filter((_, idx) => idx !== i));
+                }}
+                className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-[10px] text-white"
+              >
+                ×
+              </span>
+            </button>
+          ))}
+          {items.length < 3 && (
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="flex aspect-square items-center justify-center rounded-control border border-dashed text-xl text-text-muted hover:text-text-primary"
+              aria-label={t('attach')}
+            >
+              +
+            </button>
+          )}
+        </div>
+      </div>
+      <p className="-mt-2 text-xs text-text-muted">{t('attachHint')}</p>
+      <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => addFiles(e.target.files)} />
 
       <label className="flex flex-col gap-1.5">
         <span className="text-sm text-text-secondary">{t('background')}</span>
@@ -149,14 +204,14 @@ export function FittingClient({ coreId }: { coreId: string }) {
       </label>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-sm text-text-secondary">{t('apparel')}</span>
-        <input value={apparel} onChange={(e) => setApparel(e.target.value)} placeholder={t('apparelHint')} className="input" />
-      </label>
-
-      <label className="flex flex-col gap-1.5">
         <span className="text-sm text-text-secondary">{t('prompt')}</span>
         <input value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={t('promptPlaceholder')} className="input" />
       </label>
+
+      <details className="text-sm">
+        <summary className="cursor-pointer text-text-muted">{t('apparel')}</summary>
+        <input value={apparel} onChange={(e) => setApparel(e.target.value)} placeholder={t('apparelHint')} className="input mt-2" />
+      </details>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
 
@@ -180,6 +235,19 @@ export function FittingClient({ coreId }: { coreId: string }) {
           >
             {shared ? t('sharedDone') : t('shareToFeed')}
           </button>
+        </div>
+      )}
+
+      {/* 원본 라이트박스 */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+          onClick={() => setLightbox(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={lightbox} alt="" className="max-h-full max-w-full rounded-card" />
         </div>
       )}
     </div>

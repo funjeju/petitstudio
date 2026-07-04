@@ -4,7 +4,7 @@ import { checkAndReserve, commitCost, refundReservation } from '@/lib/server/cos
 import { editImage, hasOpenAiKey } from '@/lib/server/openai';
 import { uploadPng, readObject } from '@/lib/server/storage';
 import { newId, saveGeneration, loadApparelFragments } from '@/lib/server/assets';
-import { normalizeQuality, parseJson } from '@/lib/server/generation';
+import { collectReferenceImages, normalizeQuality, parseJson } from '@/lib/server/generation';
 import { buildFittingPrompt, sanitizeUserPrompt, PromptError } from '@/lib/prompt';
 import { adminDb } from '@/lib/firebase/admin';
 import type { CoreImageDoc, PetDoc, Species } from '@/lib/types';
@@ -20,6 +20,8 @@ export async function POST(req: Request) {
   const body = await parseJson<{
     coreId?: string;
     apparel?: string[];
+    apparelPaths?: string[]; // 유저가 업로드한 아이템 이미지(uploads/{uid}/...)
+    apparelImages?: string[]; // base64 아이템 이미지
     background?: string;
     userPrompt?: string;
     quality?: string;
@@ -43,12 +45,26 @@ export async function POST(req: Request) {
 
   let prompt: string;
   let userPromptClean: string;
+  let itemImages: Buffer[];
   try {
+    // 유저가 첨부한 아이템(옷·모자·액세서리) 이미지 수집.
+    itemImages = await collectReferenceImages({
+      uid: auth.uid,
+      sourcePaths: body.apparelPaths,
+      sourceImages: body.apparelImages,
+      max: 3,
+    });
     const apparel = await loadApparelFragments(apparelIds);
-    prompt = buildFittingPrompt({ species, apparel, background: body.background, userPrompt: body.userPrompt });
+    prompt = buildFittingPrompt({
+      species,
+      apparel,
+      background: body.background,
+      userPrompt: body.userPrompt,
+      attachedItems: itemImages.length > 0,
+    });
     userPromptClean = sanitizeUserPrompt(body.userPrompt);
   } catch (e) {
-    const status = e instanceof PromptError ? 400 : 500;
+    const status = e instanceof PromptError ? 400 : 400;
     return NextResponse.json({ error: (e as Error).message }, { status });
   }
 
@@ -62,7 +78,8 @@ export async function POST(req: Request) {
 
   try {
     const base = await readObject(core.storagePath);
-    const png = await editImage({ prompt, images: [base], quality });
+    // 첫 이미지=코어(펫), 이후=첨부 아이템 → 아이템을 펫에 합성.
+    const png = await editImage({ prompt, images: [base, ...itemImages], quality });
 
     const genId = newId('generations');
     const storagePath = `generations/${auth.uid}/${genId}.png`;
