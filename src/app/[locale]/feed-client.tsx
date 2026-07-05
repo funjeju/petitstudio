@@ -52,7 +52,7 @@ export function FeedClient() {
       {/* ── 퀵메뉴 (좁게 그룹핑, 아이콘 도형 배경) ── */}
       <nav className="mx-auto grid w-full max-w-xl grid-cols-4 gap-1 sm:gap-3">
         <QuickItem href="/create" icon="create" label={t('quickCore')} />
-        <QuickItem href="/studio" icon="apparel" label={t('quickFitting')} />
+        <QuickItem href="/fitting/new" icon="apparel" label={t('quickFitting')} />
         <QuickItem href="/collection" icon="goods" label={t('quickGoods')} />
         <QuickItem href="/studio" icon="orders" label={t('quickOrders')} />
       </nav>

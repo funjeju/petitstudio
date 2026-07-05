@@ -13,18 +13,31 @@ import { NavIcon } from './icons';
  *  · 웹(lg+): 좌측 사이드바 + 넓은 컨테이너
  */
 
-type NavKey = 'home' | 'explore' | 'create' | 'collection' | 'studio';
-const NAV: { key: NavKey; href: string }[] = [
-  { key: 'home', href: '/' },
-  { key: 'explore', href: '/explore' },
-  { key: 'create', href: '/create' },
-  { key: 'collection', href: '/collection' },
-  { key: 'studio', href: '/studio' },
+type NavKey = 'home' | 'explore' | 'fitting' | 'create' | 'collection' | 'studio';
+type IconName = 'home' | 'explore' | 'apparel' | 'create' | 'collection' | 'studio';
+type NavItem = { key: NavKey; href: string; icon: IconName; match: string };
+
+// 웹 사이드바(촬영은 상단 버튼이라 목록 제외, 피팅룸 포함).
+const SIDEBAR_NAV: NavItem[] = [
+  { key: 'home', href: '/', icon: 'home', match: '/' },
+  { key: 'explore', href: '/explore', icon: 'explore', match: '/explore' },
+  { key: 'fitting', href: '/fitting/new', icon: 'apparel', match: '/fitting' },
+  { key: 'collection', href: '/collection', icon: 'collection', match: '/collection' },
+  { key: 'studio', href: '/studio', icon: 'studio', match: '/studio' },
+];
+
+// 모바일 하단 5탭(중앙 촬영 FAB).
+const BOTTOM_NAV: NavItem[] = [
+  { key: 'home', href: '/', icon: 'home', match: '/' },
+  { key: 'explore', href: '/explore', icon: 'explore', match: '/explore' },
+  { key: 'create', href: '/create', icon: 'create', match: '/create' },
+  { key: 'collection', href: '/collection', icon: 'collection', match: '/collection' },
+  { key: 'studio', href: '/studio', icon: 'studio', match: '/studio' },
 ];
 
 function useActive() {
   const pathname = usePathname();
-  return (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+  return (match: string) => (match === '/' ? pathname === '/' : pathname.startsWith(match));
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -48,8 +61,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         </Link>
 
         <nav className="mt-6 flex flex-col gap-1">
-          {NAV.filter((n) => n.key !== 'create').map((item) => {
-            const active = isActive(item.href);
+          {SIDEBAR_NAV.map((item) => {
+            const active = isActive(item.match);
             return (
               <Link
                 key={item.key}
@@ -61,7 +74,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     : 'text-text-secondary hover:bg-surface/60 hover:text-text-primary'
                 }`}
               >
-                <NavIcon name={item.key} />
+                <NavIcon name={item.icon} />
                 {t(item.key)}
               </Link>
             );
@@ -96,8 +109,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* 모바일 하단 탭바 */}
       <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-bg/95 backdrop-blur lg:hidden">
-        {NAV.map((item) => {
-          const active = isActive(item.href);
+        {BOTTOM_NAV.map((item) => {
+          const active = isActive(item.match);
           const isCreate = item.key === 'create';
           return (
             <Link
@@ -113,7 +126,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               ) : (
                 <>
                   <NavIcon
-                    name={item.key}
+                    name={item.icon}
                     className={active ? 'text-text-primary' : 'text-text-muted'}
                   />
                   <span className={`text-[10px] ${active ? 'text-text-primary' : 'text-text-muted'}`}>
