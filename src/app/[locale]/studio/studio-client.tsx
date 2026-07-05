@@ -79,15 +79,41 @@ export function StudioClient() {
         )}
       </div>
 
-      {/* 크레딧 */}
+      {/* 프로필 + 크레딧 */}
       {usage && (
-        <section className="rounded-card border bg-surface p-4">
-          <p className="text-sm text-text-secondary">
-            {t('credits')} · <span className="uppercase">{usage.tier}</span>
-          </p>
-          <p className="mt-1 text-lg font-semibold">
-            {t('remaining', { remaining: usage.remaining, limit: usage.credits.limit })}
-          </p>
+        <section className="flex flex-col gap-4 rounded-card border bg-surface p-4">
+          <div className="flex items-center gap-3">
+            {user.photoURL ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={user.photoURL} alt="" className="h-11 w-11 rounded-full" />
+            ) : (
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-bg text-sm">
+                {(user.displayName ?? user.email ?? '?').slice(0, 1)}
+              </span>
+            )}
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium">{user.displayName ?? user.email}</p>
+              <span className="rounded-full border px-2 py-0.5 text-[11px] uppercase text-text-secondary">
+                {usage.tier}
+              </span>
+            </div>
+          </div>
+          <div>
+            <div className="mb-1.5 flex items-center justify-between text-xs">
+              <span className="text-text-muted">{t('credits')}</span>
+              <span className="font-medium">
+                {t('remaining', { remaining: usage.remaining, limit: usage.credits.limit })}
+              </span>
+            </div>
+            <div className="h-1.5 overflow-hidden rounded-full bg-bg">
+              <div
+                className="h-full rounded-full bg-accent"
+                style={{
+                  width: `${usage.credits.limit ? Math.min(100, Math.round((usage.credits.used / usage.credits.limit) * 100)) : 0}%`,
+                }}
+              />
+            </div>
+          </div>
         </section>
       )}
 

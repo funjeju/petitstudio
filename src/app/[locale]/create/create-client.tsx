@@ -19,6 +19,7 @@ const SPECIES: { value: Species; key: 'speciesDog' | 'speciesCat' | 'speciesOthe
 
 export function CreateClient() {
   const t = useTranslations('create');
+  const tauth = useTranslations('auth');
   const { user, signInWithGoogle } = useAuth();
 
   const [name, setName] = useState('');
@@ -69,16 +70,22 @@ export function CreateClient() {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-5 py-4">
-      <h1 className="text-xl font-semibold">{t('title')}</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
+        <p className="text-sm text-text-secondary">{t('subtitle')}</p>
+      </div>
 
       {!user && (
-        <button
-          type="button"
-          onClick={() => void signInWithGoogle()}
-          className="rounded-control bg-accent px-4 py-2 text-sm font-medium text-on-accent"
-        >
-          {t('needLogin')}
-        </button>
+        <div className="flex items-center justify-between rounded-card border bg-surface px-4 py-3">
+          <span className="text-sm text-text-secondary">{t('needLogin')}</span>
+          <button
+            type="button"
+            onClick={() => void signInWithGoogle()}
+            className="rounded-control bg-accent px-3 py-1.5 text-xs font-medium text-on-accent"
+          >
+            {tauth('signInWithGoogle')}
+          </button>
+        </div>
       )}
 
       <Field label={t('petName')}>

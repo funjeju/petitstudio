@@ -39,6 +39,7 @@
   },
   "create": {
     "title": "Photograph my pet",
+    "subtitle": "A few photos become a studio-grade core image.",
     "petName": "Name",
     "petNamePlaceholder": "Choco",
     "species": "Species",

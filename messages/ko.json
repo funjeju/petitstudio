@@ -39,6 +39,7 @@
   },
   "create": {
     "title": "우리 아이 촬영하기",
+    "subtitle": "사진 몇 장이면 촬영 수준의 코어 이미지가 완성돼요.",
     "petName": "이름",
     "petNamePlaceholder": "초코",
     "species": "종류",
