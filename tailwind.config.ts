@@ -21,6 +21,8 @@ const config: Config = {
         'text-muted': 'var(--text-muted)',
         accent: 'var(--accent)',
         'on-accent': 'var(--on-accent)',
+        point: 'var(--point)',
+        'point-soft': 'var(--point-soft)',
       },
       borderRadius: {
         card: '12px',

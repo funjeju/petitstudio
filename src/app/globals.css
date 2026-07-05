@@ -16,6 +16,10 @@
   --accent: #1a1a1a;
   --on-accent: #ffffff;
 
+  /* 포인트 컬러(따뜻한 앰버) — 미니멀 유지, 호버/활성/강조에만 절제 사용 */
+  --point: #c98a46;
+  --point-soft: #f4ece1;
+
   /* 레이아웃 토큰(DESIGN.md §4) */
   --radius-card: 12px;
   --radius-control: 8px;
@@ -31,6 +35,8 @@
   --text-muted: #9b9b98;
   --accent: #f2f2f0;
   --on-accent: #101010;
+  --point: #e0a860;
+  --point-soft: #26201a;
 }
 
 @layer base {

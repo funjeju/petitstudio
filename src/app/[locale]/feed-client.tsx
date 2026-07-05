@@ -27,30 +27,30 @@ export function FeedClient() {
   const looks = ['/samples/look1.png', '/samples/look2.png', '/samples/look3.png', '/samples/look4.png'];
 
   return (
-    <div className="flex flex-col gap-10">
-      {/* ── 히어로 (2단) ── */}
-      <section className="grid items-stretch gap-6 rounded-card border bg-surface p-6 sm:p-8 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:p-10">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
+      {/* ── 히어로 (2단, 따뜻한 톤) ── */}
+      <section className="grid items-stretch gap-6 overflow-hidden rounded-card bg-point-soft p-6 sm:p-8 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:p-10">
         <div className="flex flex-col justify-center gap-5">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-text-muted">{t('eyebrow')}</p>
-          <h1 className="whitespace-pre-line text-3xl font-bold leading-[1.15] tracking-tight lg:text-[2.6rem]">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-point">{t('eyebrow')}</p>
+          <h1 className="whitespace-pre-line text-3xl font-bold leading-[1.12] tracking-tight text-text-primary lg:text-[2.7rem]">
             {t('heroTitle')}
           </h1>
           <p className="max-w-md text-sm leading-relaxed text-text-secondary lg:text-base">{t('heroSub')}</p>
           <Link
             href="/create"
-            className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition-opacity hover:opacity-90"
+            className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent shadow-sm transition-opacity hover:opacity-90"
           >
             {t('ctaCore')} <span aria-hidden>→</span>
           </Link>
         </div>
-        <div className="min-h-[220px] overflow-hidden rounded-card border bg-bg lg:min-h-[300px]">
+        <div className="relative min-h-[240px] overflow-hidden rounded-card lg:min-h-[320px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/samples/hero.png" alt="" className="h-full w-full object-cover" />
+          <img src="/samples/hero.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
         </div>
       </section>
 
-      {/* ── 퀵메뉴 카드 ── */}
-      <nav className="grid grid-cols-2 gap-2 rounded-card border p-2 sm:grid-cols-4">
+      {/* ── 퀵메뉴 (좁게 그룹핑, 아이콘 도형 배경) ── */}
+      <nav className="mx-auto grid w-full max-w-xl grid-cols-4 gap-1 sm:gap-3">
         <QuickItem href="/create" icon="create" label={t('quickCore')} />
         <QuickItem href="/studio" icon="apparel" label={t('quickFitting')} />
         <QuickItem href="/collection" icon="goods" label={t('quickGoods')} />
@@ -141,12 +141,11 @@ function QuickItem({
   label: string;
 }) {
   return (
-    <Link
-      href={href}
-      className="flex flex-col items-center gap-2 rounded-control px-2 py-4 text-center transition-colors hover:bg-surface"
-    >
-      <NavIcon name={icon} width={24} height={24} />
-      <span className="text-xs leading-tight text-text-secondary">{label}</span>
+    <Link href={href} className="group flex flex-col items-center gap-2 py-2 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-point-soft text-text-primary transition-colors group-hover:bg-point group-hover:text-white">
+        <NavIcon name={icon} width={26} height={26} />
+      </span>
+      <span className="text-xs font-medium leading-tight text-text-primary">{label}</span>
     </Link>
   );
 }

@@ -147,10 +147,12 @@ export function buildVirtualPetPrompt(recipe: VirtualRecipe): string {
   const extras = (recipe.extras ?? []).map((e) => sanitizeUserPrompt(e)).filter(Boolean);
 
   return [
-    `a photorealistic imaginary pet blending ${parts.join(', ')}`,
-    extras.length ? `with ${extras.join(', ')}` : '',
-    'coherent single creature, believable anatomy',
-    'studio portrait, neutral seamless backdrop, soft lighting, photorealistic',
+    `an adorable, extremely cute baby imaginary pet blending ${parts.join(', ')}`,
+    extras.length
+      ? `featuring ${extras.join(', ')} that grow organically from the body as natural anatomy, seamlessly integrated with the fur, matching material, lighting and texture — NOT a graphic, sticker or CGI overlay`
+      : '',
+    'a single coherent creature, believable soft anatomy, big expressive eyes, round fluffy proportions, endearing kawaii charm',
+    'professional studio portrait, neutral seamless backdrop, soft lighting, photorealistic, highly detailed realistic fur',
   ]
     .filter(Boolean)
     .join('; ');
