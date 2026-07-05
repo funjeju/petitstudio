@@ -9,6 +9,7 @@ import { fetchCore, fetchMyCores, shareGeneration } from '@/lib/client-data';
 import { uploadOriginal } from '@/lib/firebase/upload';
 import { authedFetch } from '@/lib/api-client';
 import { ResultView } from '@/components/result-view';
+import { NavIcon } from '@/components/icons';
 import type { CoreImageDoc } from '@/lib/types';
 
 const BACKGROUNDS = [
@@ -140,49 +141,62 @@ export function FittingClient({ coreId }: { coreId: string }) {
     <div className="mx-auto flex max-w-md flex-col gap-5 py-4">
       <h1 className="text-xl font-semibold">{t('title')}</h1>
 
-      {/* 코어 이미지 + 첨부 아이템 썸네일 (06 §2) */}
-      <div className="flex gap-3">
-        <div className="min-w-0 flex-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={selected.imageUrl} alt="" className="w-full rounded-card border" />
-        </div>
-        <div className="flex w-16 shrink-0 flex-col gap-2">
-          {items.map((it, i) => (
-            <button
-              key={it.previewUrl}
-              type="button"
-              onClick={() => setLightbox(it.previewUrl)}
-              title={t('viewOriginal')}
-              className="relative aspect-square overflow-hidden rounded-control border"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={it.previewUrl} alt="" className="h-full w-full object-cover" />
-              <span
-                role="button"
-                tabIndex={-1}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setItems(items.filter((_, idx) => idx !== i));
-                }}
-                className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-black/60 text-[10px] text-white"
+      {/* 코어 이미지 (06 §2) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={selected.imageUrl} alt="" className="w-full rounded-card border" />
+
+      {/* 입힐 아이템 업로드 — 명확한 영역 */}
+      <section className="flex flex-col gap-2">
+        <span className="text-sm font-medium">{t('attach')}</span>
+
+        {items.length === 0 ? (
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            className="flex flex-col items-center justify-center gap-2 rounded-card border-2 border-dashed py-8 text-text-muted transition-colors hover:border-text-secondary hover:text-text-primary"
+          >
+            <NavIcon name="apparel" width={28} height={28} />
+            <span className="text-sm font-medium">{t('uploadCta')}</span>
+          </button>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {items.map((it, i) => (
+              <button
+                key={it.previewUrl}
+                type="button"
+                onClick={() => setLightbox(it.previewUrl)}
+                title={t('viewOriginal')}
+                className="relative h-20 w-20 overflow-hidden rounded-control border"
               >
-                ×
-              </span>
-            </button>
-          ))}
-          {items.length < 3 && (
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              className="flex aspect-square items-center justify-center rounded-control border border-dashed text-xl text-text-muted hover:text-text-primary"
-              aria-label={t('attach')}
-            >
-              +
-            </button>
-          )}
-        </div>
-      </div>
-      <p className="-mt-2 text-xs text-text-muted">{t('attachHint')}</p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={it.previewUrl} alt="" className="h-full w-full object-cover" />
+                <span
+                  role="button"
+                  tabIndex={-1}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setItems(items.filter((_, idx) => idx !== i));
+                  }}
+                  className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-xs text-white"
+                >
+                  ×
+                </span>
+              </button>
+            ))}
+            {items.length < 3 && (
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                className="flex h-20 w-20 items-center justify-center rounded-control border border-dashed text-2xl text-text-muted hover:text-text-primary"
+                aria-label={t('uploadCta')}
+              >
+                +
+              </button>
+            )}
+          </div>
+        )}
+        <p className="text-xs text-text-muted">{t('attachHint')}</p>
+      </section>
       <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => addFiles(e.target.files)} />
 
       <label className="flex flex-col gap-1.5">
