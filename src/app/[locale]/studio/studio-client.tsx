@@ -102,17 +102,21 @@ export function StudioClient() {
             <div className="mb-1.5 flex items-center justify-between text-xs">
               <span className="text-text-muted">{t('credits')}</span>
               <span className="font-medium">
-                {t('remaining', { remaining: usage.remaining, limit: usage.credits.limit })}
+                {usage.role === 'admin'
+                  ? t('unlimited')
+                  : t('remaining', { remaining: usage.remaining, limit: usage.credits.limit })}
               </span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-bg">
-              <div
-                className="h-full rounded-full bg-accent"
-                style={{
-                  width: `${usage.credits.limit ? Math.min(100, Math.round((usage.credits.used / usage.credits.limit) * 100)) : 0}%`,
-                }}
-              />
-            </div>
+            {usage.role !== 'admin' && (
+              <div className="h-1.5 overflow-hidden rounded-full bg-bg">
+                <div
+                  className="h-full rounded-full bg-accent"
+                  style={{
+                    width: `${usage.credits.limit ? Math.min(100, Math.round((usage.credits.used / usage.credits.limit) * 100)) : 0}%`,
+                  }}
+                />
+              </div>
+            )}
           </div>
         </section>
       )}

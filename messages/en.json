@@ -99,6 +99,7 @@
     "title": "My Studio",
     "credits": "This month's credits",
     "remaining": "{remaining} / {limit} left",
+    "unlimited": "Unlimited",
     "myPets": "My pets",
     "noPets": "No pets yet.",
     "myCores": "Core images",

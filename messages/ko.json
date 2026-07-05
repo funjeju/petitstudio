@@ -99,6 +99,7 @@
     "title": "마이 스튜디오",
     "credits": "이번 달 크레딧",
     "remaining": "{remaining} / {limit} 남음",
+    "unlimited": "무제한",
     "myPets": "마이펫",
     "noPets": "등록된 펫이 없어요.",
     "myCores": "코어 이미지",

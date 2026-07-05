@@ -56,8 +56,9 @@ export async function checkAndReserve(input: GuardInput): Promise<GuardResult> {
         return { ok: false as const, status: 404, reason: 'user not found (부트스트랩 필요)' };
       }
 
-      const user = userSnap.data() as { tier?: Tier; credits?: Credits };
+      const user = userSnap.data() as { tier?: Tier; role?: string; credits?: Credits };
       const tier = user.tier ?? DEFAULT_TIER;
+      const isAdmin = user.role === 'admin';
       let credits = user.credits;
 
       // 주기 경과 시 이번 달 한도로 리셋.
@@ -65,16 +66,21 @@ export async function checkAndReserve(input: GuardInput): Promise<GuardResult> {
         credits = resetCreditsForPeriod(tier, cfg.tierLimits, period, credits?.trialUsed ?? false);
       }
 
-      // 잔량 검사.
-      if (credits.used >= credits.limit) {
+      // 잔량 검사 — 어드민은 크레딧 제한 없음(차감/검사 스킵).
+      if (!isAdmin && credits.used >= credits.limit) {
         return { ok: false as const, status: 402, reason: 'quota exceeded (크레딧 소진)' };
       }
 
-      // 월 총액 kill switch — 이미 상한 도달 시 차단.
+      // 월 총액 kill switch — 전역 안전장치라 어드민 포함 유지.
       const totalSnap = await tx.get(totalRef);
       const totalUsd = (totalSnap.exists ? (totalSnap.get('costUsd') as number) : 0) ?? 0;
       if (totalUsd >= cfg.monthlyCostCapUsd) {
         return { ok: false as const, status: 503, reason: 'monthly cost cap reached (kill switch)' };
+      }
+
+      if (isAdmin) {
+        // 크레딧 미차감. (Number.MAX_SAFE_INTEGER 로 '무제한' 표시)
+        return { ok: true as const, reserved: { period, remaining: Number.MAX_SAFE_INTEGER } };
       }
 
       // 선차감(예약).
@@ -100,6 +106,7 @@ export async function refundReservation(uid: string, period = currentPeriod()): 
     await db.runTransaction(async (tx) => {
       const snap = await tx.get(userRef);
       if (!snap.exists) return;
+      if (snap.get('role') === 'admin') return; // 어드민은 미차감 → 환불 불필요
       const credits = snap.get('credits') as Credits | undefined;
       if (!credits || credits.period !== period) return; // 주기 바뀌었으면 롤백 불필요
       const used = Math.max(0, credits.used - 1);
